@@ -196,6 +196,57 @@
             50% { transform: translateY(-8px); }
         }
 
+        /* ── COUNTDOWN ── */
+        #countdown {
+            text-align: center;
+            padding: 40px 20px;
+            margin: 20px 0;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        #countdown .cd-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.2);
+        }
+
+        #countdown .cd-sub {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            opacity: 0.85;
+            margin-bottom: 20px;
+        }
+
+        #countdown .cd-number {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            display: block;
+        }
+
+        #countdown .cd-display {
+            font-size: clamp(1rem, 2.5vw, 1.15rem);
+            background: rgba(255,255,255,0.12);
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 60px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-top: 15px;
+            backdrop-filter: blur(4px);
+        }
+
+        #countdown .cd-hearts {
+            margin-top: 12px;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+        }
+
         /* ── LOVE BUTTON ── */
         #love-action {
             display: flex;
@@ -653,6 +704,15 @@
             <div class="tiny-hearts">🖤 👑 🖤 👑 🖤</div>
         </section>
 
+        <!-- ─── COUNTDOWN ─── -->
+        <section id="countdown">
+            <div class="cd-title">💫 لوجهك الحلو 💫</div>
+            <div class="cd-sub">
+                متبقي <span class="cd-number" id="cdDays">0</span> يوم
+            </div>
+            <div class="cd-display">📅 اكتوبر ٢٠٢٦</div>
+        </section>
+
         <!-- ─── LOVE BUTTON ─── -->
         <section id="love-action">
             <div class="section-title">🩷 حب حياتي 🩷</div>
@@ -899,6 +959,18 @@
         }
         updateDateCounter();
         setInterval(updateDateCounter, 1000 * 60 * 60); // update every hour
+
+        // ──────────────────────────────────────────────
+        // 2.6 COUNTDOWN
+        // ──────────────────────────────────────────────
+        function updateCountdown() {
+            const target = new Date('2026-10-01T00:00:00');
+            const now = new Date();
+            const diff = Math.max(0, Math.ceil((target - now) / (1000 * 60 * 60 * 24)));
+            document.getElementById('cdDays').textContent = diff.toLocaleString('en-US');
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000 * 60 * 60);
 
         renderCounter();
 
