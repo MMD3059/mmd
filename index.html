@@ -851,9 +851,26 @@
         const TOTAL_PETALS = 10;
         const loveMsgs = ['تحبني 💕', 'ما تحبني 💔'];
 
+        function playSoftPop() {
+            try {
+                const ac = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ac.createOscillator();
+                const gain = ac.createGain();
+                osc.connect(gain).connect(ac.destination);
+                osc.frequency.setValueAtTime(500, ac.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(350, ac.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.05, ac.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.08);
+                osc.start();
+                osc.stop(ac.currentTime + 0.08);
+                setTimeout(() => ac.close(), 150);
+            } catch(e) {}
+            try { navigator.vibrate(15); } catch(e) {}
+        }
+
         roseEmoji.addEventListener('click', function() {
             if (petalCount >= TOTAL_PETALS) return;
-            try { navigator.vibrate(25); } catch(e) {}
+            playSoftPop();
 
             this.classList.remove('pop');
             void this.offsetWidth;
