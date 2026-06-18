@@ -448,9 +448,116 @@
                 padding: 12px 8px;
             }
         }
+        /* ── PASSWORD OVERLAY ── */
+        #passwordOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            text-align: center;
+            padding: 20px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        #passwordOverlay h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        #passwordOverlay p {
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        #passwordOverlay .lock-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        #passwordInput {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.2rem;
+            padding: 14px 25px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            text-align: center;
+            outline: none;
+            width: 260px;
+            max-width: 80vw;
+            transition: border-color 0.3s;
+            direction: ltr;
+        }
+
+        #passwordInput:focus {
+            border-color: #ff4757;
+        }
+
+        #passwordInput::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        #passwordSubmit {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 12px 40px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        #passwordSubmit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255,45,85,0.4);
+        }
+
+        #passwordError {
+            color: #ff6b6b;
+            font-size: 0.95rem;
+            margin-top: 12px;
+            min-height: 1.5em;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #passwordError.show {
+            opacity: 1;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.unlocked {
+            display: block;
+        }
     </style>
 </head>
 <body>
+
+    <div id="passwordOverlay">
+        <div class="lock-icon">🔒</div>
+        <h2>موقع خاص</h2>
+        <p>هذا الموقع خاص بمين يعرف الباسوورد فقط</p>
+        <input type="password" id="passwordInput" placeholder="أدخل الباسوورد" autocomplete="off">
+        <button id="passwordSubmit">دخول</button>
+        <div id="passwordError"></div>
+    </div>
 
     <canvas id="heartsCanvas"></canvas>
 
@@ -809,6 +916,39 @@
         });
 
         console.log('❤️ جوجو حياتي - كلشي الك ❤️');
+
+        // ──────────────────────────────────────────────
+        // 7. PASSWORD PROTECTION
+        // ──────────────────────────────────────────────
+        const PASSWORD = 'mmdmj';
+        const overlay = document.getElementById('passwordOverlay');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordSubmit = document.getElementById('passwordSubmit');
+        const passwordError = document.getElementById('passwordError');
+        const mainContent = document.querySelector('.content');
+
+        function checkPassword() {
+            const entered = passwordInput.value.trim();
+            if (entered.toLowerCase() === PASSWORD.toLowerCase()) {
+                overlay.style.display = 'none';
+                mainContent.classList.add('unlocked');
+            } else {
+                passwordError.textContent = '❌ الباسوورد غلط، حاول مرة تانية';
+                passwordError.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.focus();
+                passwordInput.style.borderColor = '#ff4757';
+                setTimeout(() => {
+                    passwordInput.style.borderColor = 'rgba(255,255,255,0.3)';
+                }, 2000);
+            }
+        }
+
+        passwordSubmit.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+        passwordInput.focus();
     </script>
 </body>
 </html>
