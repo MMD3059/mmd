@@ -464,7 +464,7 @@
                 <div class="petal p10"></div>
             </div>
             <div class="qtf-text" id="qtfText"></div>
-            <div class="rose-msg" id="roseMessage">🌹 أنتِ أزكى وردة في حياتي</div>
+            <div class="rose-msg" id="roseMessage">🌹 أنتِ أحلى وردة في حياتي</div>
         </section>
 
         <!-- ─── MUSIC ─── -->
@@ -781,6 +781,7 @@
         const heartEcgPath = document.querySelector('#heartEcg path');
         const heartText = document.getElementById('heartText');
         let bpm = 72;
+        let heartSpeed = 1;
 
         heartBtn.addEventListener('click', function() {
             // Pulse wave
@@ -794,18 +795,18 @@
             void heartEcgPath.offsetWidth;
             heartEcgPath.classList.add('draw');
 
+            // Faster with each press
+            heartSpeed = Math.max(0.2, heartSpeed - 0.08);
+            this.style.animationDuration = heartSpeed + 's';
+
             // BPM effect
-            bpm = 72 + Math.floor(Math.random() * 30);
+            bpm = Math.min(200, Math.floor(72 + (1 / heartSpeed) * 20));
             const msgs = [
                 `🫀 مع كل ضغطة قلبي بدق بحبك — ${bpm} BPM`,
                 `💓 كل ضغطة بتقول بحبك ${bpm} BPM`,
                 `🖤 قلبي ما بيدق إلا لالك ${bpm} BPM`,
             ];
             heartText.innerHTML = msgs[Math.floor(Math.random() * msgs.length)];
-
-            // Extra fast beats
-            this.classList.add('beating');
-            setTimeout(() => this.classList.remove('beating'), 1500);
         });
 
         // ══════════════════════════════════════════════
