@@ -851,37 +851,9 @@
         const TOTAL_PETALS = 10;
         const loveMsgs = ['تحبني 💕', 'ما تحبني 💔'];
 
-        let audioCtx;
-        function playWoosh() {
-            try {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const bufferSize = audioCtx.sampleRate * 0.25;
-                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    const t = i / audioCtx.sampleRate;
-                    const env = Math.max(0, 1 - t / 0.25);
-                    data[i] = (Math.random() * 2 - 1) * env * env * 0.4;
-                }
-                const src = audioCtx.createBufferSource();
-                src.buffer = buffer;
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.setValueAtTime(3000, audioCtx.currentTime);
-                filter.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.25);
-                filter.Q.value = 2;
-                const gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-                src.connect(filter).connect(gain).connect(audioCtx.destination);
-                src.start();
-            } catch(e) {}
-        }
-
         roseEmoji.addEventListener('click', function() {
             if (petalCount >= TOTAL_PETALS) return;
-            playWoosh();
+            try { navigator.vibrate(25); } catch(e) {}
 
             this.classList.remove('pop');
             void this.offsetWidth;
