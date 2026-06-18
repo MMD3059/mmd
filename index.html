@@ -133,6 +133,69 @@
             50% { opacity: 0; }
         }
 
+        /* ── DATE COUNTER ── */
+        #date-counter {
+            text-align: center;
+            padding: 40px 20px;
+            margin: 20px 0;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        #date-counter .date-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.2);
+        }
+
+        #date-counter .date-sub {
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            opacity: 0.85;
+            margin-bottom: 20px;
+        }
+
+        #date-counter .date-display {
+            font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+            font-weight: 600;
+            background: rgba(255,255,255,0.12);
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 60px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 15px;
+            backdrop-filter: blur(4px);
+        }
+
+        #date-counter .days-count {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        #date-counter .days-label {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        #date-counter .tiny-hearts {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            animation: heartFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes heartFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
         /* ── LOVE BUTTON ── */
         #love-action {
             display: flex;
@@ -580,6 +643,16 @@
             </div>
         </section>
 
+        <!-- ─── DATE COUNTER ─── -->
+        <section id="date-counter">
+            <div class="date-title">💕 منذ ١١ يوليو ٢٠٢٢ 💕</div>
+            <div class="date-sub">من يوم ما حكينا وقلبي صار ملكك</div>
+            <div class="date-display">📅 ١١ يوليو ٢٠٢٢</div>
+            <div class="days-count" id="daysCount">0</div>
+            <div class="days-label">يوم حب 🖤</div>
+            <div class="tiny-hearts">🖤 👑 🖤 👑 🖤</div>
+        </section>
+
         <!-- ─── LOVE BUTTON ─── -->
         <section id="love-action">
             <div class="section-title">🩷 حب حياتي 🩷</div>
@@ -813,6 +886,19 @@
         const styleSheet = document.createElement('style');
         styleSheet.textContent = `@keyframes flashFade { 0% { opacity: 1; } 100% { opacity: 0; } }`;
         document.head.appendChild(styleSheet);
+
+        // ──────────────────────────────────────────────
+        // 2.5 DATE COUNTER
+        // ──────────────────────────────────────────────
+        function updateDateCounter() {
+            const start = new Date('2022-07-11T00:00:00');
+            const now = new Date();
+            const diff = now - start;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('daysCount').textContent = days.toLocaleString('en-US');
+        }
+        updateDateCounter();
+        setInterval(updateDateCounter, 1000 * 60 * 60); // update every hour
 
         renderCounter();
 
